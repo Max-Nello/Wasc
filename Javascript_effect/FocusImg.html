@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>响应式焦点图轮播</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="//at.alicdn.com/t/font_1706179_vvz4pxrjtc9.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/vfx-nav.css">
+
+		<style>
+			*{
+				font-family: '微软雅黑';
+				box-sizing: border-box;
+			}
+			body{
+				margin: 0;
+				display: block;
+			}
+			nav{
+				background: rgba(255,255,255, .8);
+			}
+			nav a i.iconfont{
+				font-size: 34px;
+			}
+			.container{
+				width: 100vw;
+				height: 100vh;
+				margin: 0 auto;
+			}
+			.container *{
+				margin: 0;
+				padding: 0;
+			}
+			.container .slide{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				transition: all linear 0.6s; 
+				overflow: hidden;
+			}
+			.container .image{
+				width: 100%;
+				height: 100%;
+				
+				object-fit: cover;
+				position: absolute;
+				z-index: 50;
+			}
+			.text-container{
+				position: absolute;
+				bottom: 0;
+				z-index: 100;
+				color: #6f6f6f;
+				
+				background: rgba(255,255,255, .66);
+				width: 50%;
+				height: auto;
+				padding: 40px;	
+				padding-top: 50px;
+				padding-bottom: 50px;
+			}
+			.text-container .title{
+				margin-bottom: 24px;
+				color: #151515;
+				font-size: 40px;
+			}
+			.text-container .content{
+				width: 80%;
+				line-height: 35px;
+				font-size: 22px;
+			}
+			#btn-next, #btn-up{
+				position: absolute;
+				z-index: 51;
+				width: 80px;
+				height: 80px;
+				color: #000;
+				background: #fff;
+				
+				text-align: center;
+				line-height: 80px;
+				box-shadow: 0 0 5px #686868;
+				top: calc(50% - 24px);
+				left: 50px;
+				transition: all .3s;
+				
+				cursor: pointer;
+			}
+			#btn-next i, #btn-up i{
+				font-size: 70px;
+			}
+			#btn-next{
+				left: unset;
+				right: 50px;
+			}
+			#btn-next:hover, #btn-up:hover{
+				transform: scale(1.1);
+			}
+			
+			
+			.container .slide{
+				opacity: 0;
+			}
+			
+			.container .slide.index{
+				opacity: 1;
+			}
+			
+			.container .slide .text-container{
+				opacity: 0;
+				transform: translateY(500px);
+			}
+			.container .slide.index .text-container{
+				opacity: 1;
+				transform: translateY(0);
+				transition: all .6s ease-in-out 0.4s;
+			}
+			@media screen and (max-width: 960px) {
+				.container .slide .text-container{
+					width: 100%;
+					padding-bottom: 20px;
+					padding-top: 50px;
+					background: linear-gradient(180deg, transparent,rgba(255,255,255, .5),rgba(255,255,255, .55),rgba(255,255,255, .6),rgba(255,255,255, .65),rgba(255,255,255, .7));
+					transition: all .6s!important;
+				}
+				.text-container .content{
+					width: 100%;
+				}
+				#btn-next, #btn-up{
+					left: 24px;
+					width: 48px;
+					height: 48px;
+					line-height: 48px;
+					top: 40%;
+				}
+				#btn-next i, #btn-up i{
+					font-size: 30px;
+				}
+				
+				#btn-next{
+					left: unset;
+					right: 24px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav>
+			<a onclick="location.reload()"><i class="iconfont iconshuaxin"></i></a>
+			<a href="../stack.html"><i class="iconfont iconicon-test47"></i></a>
+			<span>响应式焦点图轮播</span>
+		</nav>
+		<!-- <a class="get-back" href="../stack.html">&#xe669;</a> -->
+		
+		<div class="container">
+			<div class="slide index">
+				<img class="image" src="../img/banner5.jpg" alt="" />
+				
+				<div class="text-container index">
+					<h1 class="title">马尔代夫海岸线</h1>
+					<p class="content">马尔代夫的纯天然洞穴，吸引着一波又一波的游客前来欣赏。那拍打沙滩的海浪声，和你在洞穴里听到的空灵回音，这唯美的艺术，怎能被世界所默然？</p>
+				</div>
+			</div>
+			<div class="slide">
+				<img class="image" src="../img/banner1.jpg" alt="" />
+				
+				<div class="text-container">
+					<h1 class="title">中唯如花</h1>
+					<p class="content">中国有一位女士，有着女人的魅力，男人的雄壮。被全球爱美人士，也就是爱我人士，称为“地球球花”，或者“活在现代的霸王龙”</p>
+				</div>
+			</div>
+			<div class="slide">
+				<img class="image" src="../img/banner2.jpg" alt="" />
+				
+				<div class="text-container">
+					<h1 class="title">北美加州帆船</h1>
+					<p class="content">在北美一带流行的杀马特帆船，经过时间的打磨，变得成熟稳重，仿佛一个含苞待放的如花。售价只需999$亿，还等什么?赶紧来订购吧！</p>
+				</div>
+			</div>
+			
+			<div id="btn-next"><i class="iconfont iconxiayiye"></i></div>
+			<div id="btn-up"><i class="iconfont iconshangyiye"></i></div>
+			
+		</div>
+		
+		<script type="text/javascript">
+			var btnUp = document.querySelector('#btn-up');
+			var btnNext = document.querySelector('#btn-next');
+			
+			var slides = document.querySelectorAll('.slide');
+			var textContainer = document.querySelectorAll('.text-container');
+			
+			var imgIndex = 0;
+			
+			var autoPlay = 0;
+			
+			setInterval(function(){
+				autoPlay++;
+				if(autoPlay == 20){
+					nextImg();	
+				}
+				
+			},200)
+			
+			btnNext.addEventListener('click', nextImg);
+			btnUp.addEventListener('click', upImg)
+			
+			function nextImg(){
+				let index = slides[imgIndex];
+				index.classList.remove('index');
+				
+				imgIndex++;
+				if(imgIndex >= slides.length){
+					imgIndex = 0;
+				}
+				
+				slides[imgIndex].classList.add('index');
+				autoPlay = 0;
+			}
+			function upImg(){
+				let index = slides[imgIndex];
+				index.classList.remove('index');
+				
+				imgIndex--;
+				if(imgIndex < 0){
+					imgIndex = slides.length - 1;
+				}
+				
+				slides[imgIndex].classList.add('index');
+				autoPlay = 0;
+			}
+			
+		</script>
+	</body>
+
+</html>
