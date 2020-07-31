@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>悦听 | 纵享丝滑=_=</title>
+		<link href="//at.alicdn.com/t/font_1706179_f9jvcj4juqw.css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<script src="./js/blugins/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/music.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="./css/music.css">
+		<style>
+
+		</style>
+		<!-- <script type="text/javascript" src="/static/js/protect.js"></script> -->
+	</head>
+	<body>
+
+		<div class="music_container" id="app">
+			<header>
+				<label for="" class="logo"><i class="iconfont iconmv-line"></i><span>悦听</span></label>
+				<div class="set_container">
+					<div class="search_box">
+						<label class="iconfont iconsousuo1"></label>
+						<input @keyup.enter="searchMusic" v-model="query" type="text" class="search" placeholder="搜索你喜欢的音乐吧!">
+					</div>
+					<div class="set_view">
+						<span><i class="iconfont iconMV"></i>MV</span>
+						<span @click="shows"><i class="iconfont iconyifuhuanfu"></i>换肤</span>
+					</div>
+				</div>
+			</header>
+
+			<main class="subject">
+				<ul class="music-list">
+					<li v-for="item in musicList" @click="playMusic(item.id)">
+						<label class="startImg iconfont iconbofang2"></label>
+						<b>{{ item.name }}</b>
+						<span v-if="item.mvid != 0" @click="playMV(item.mvid)"><i @click="li_hide" class="iconfont iconMV"></i></span>
+					</li>
+				</ul>
+
+				<div class="big_img">
+					<img src="./img/cd.png" alt="" class="cd atuoRotate" :class="{playing:isPlaying}" />
+					<img :src="musicCover" class="atuoRotate play_img" alt="" :class="{playing:isPlaying}">
+				</div>
+
+				<div class="comment_container">
+					<h5 class="comment_title">热门留言</h5>
+					<dl class="comment_ul" v-for="item in hotComment">
+
+						<dt class="userimg">
+							<img :src="item.user.avatarUrl" alt="">
+							<span class="name">{{ item.user.nickname }}</span>
+						</dt>
+						<dd class="detail">{{ item.content }}</dd>
+					</dl>
+				</div>
+			</main>
+			<div class="silde_btn">
+				<span class="silde_click_img" @click="shows">背景</span>
+				<span class="silde_click_comment">评论</span>
+				<i class="iconfont iconxiayiye"></i>				
+			</div>
+			<nav class="nav_menu">
+				<div class="img">
+					<img v-bind:src="musicCover" alt="">
+					<b>{{ name }}</b>
+				</div>
+				<audio class="my_audio" @play="play" @pause="pause" ref="audio" v-bind:src="musicUrl" controls autoplay loop></audio>
+			</nav>
+
+			<div class="video_con" v-if="isShow">
+				<div class="video_btn"><i class="iconfont iconshangyiye" @click="hide"></i></div>
+				<video :src="mvUrl" controls="controls" class="video"></video>
+				<div class="mask" @click="hide"></div>
+			</div>
+			
+			<div v-show="huanfushow" class="color_img">
+				<a @click="shows" href="javascript:;" class="remove iconfont iconicon-test101"></a>
+				<h1>背景壁纸</h1>
+				<div><img onclick="lock('切换成功')" src="./img/image1.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image2.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/banner1.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/phone7.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/banner5.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image3.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image4.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image5.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image6.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image7.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image8.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/phone11.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/banner2.jpg" /></div>
+				<div><img onclick="lock('切换成功')" src="./img/image9.jpg" /></div>
+			</div>
+		</div>
+
+		<!-- <link rel="stylesheet" type="text/css" href="css/normalize.css" /> -->
+		<!--CSS RESET-->
+		<!-- <link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"> -->
+		<!--演示页面样式，使用时可以不引用-->
+		<!-- <link rel="stylesheet" type="text/css" href="./dist/css/main.min.css"> -->
+
+		<!-- <script src="./dist/js/app.js"></script> -->
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="js/music.js" type="text/javascript"></script>
+		<script>
+			
+			var img_box = document.querySelector('.color_img');
+			var img = img_box.querySelectorAll('img');
+			var imgs = document.querySelector('.music_container');
+			var header = document.querySelector('header');
+			
+			for(var i = 0; i < img.length - 1; i++){
+				img[i].addEventListener('click', function(){
+					that = this.src;
+					imgs.style.background = 'url(' + that + ')';
+					imgs.style.backgroundPosition = 'center';
+					imgs.style.backgroundSize = 'cover';
+				})
+				img[img.length - 1].onclick = function(){
+					if(document.body.offsetWidth > 550){
+						that = this.src;
+						console.log(1);
+						imgs.style.background = 'url(' + that + ')';
+						imgs.style.backgroundPosition = 'bottom';
+						imgs.style.backgroundSize = '95%';
+					}
+					else{
+						that = this.src;
+						imgs.style.background = 'url(' + that + ')';
+						imgs.style.backgroundPosition = 'center';
+						imgs.style.backgroundSize = 'cover';
+					}
+				}
+			}
+
+			if(document.body.offsetWidth > 550){
+			var loginBox = document.querySelector('.music_container');
+			var dragBox = document.querySelector('.logo');
+
+			dragBox.addEventListener('mousedown', function(e) {
+				var x = e.pageX;
+				var y = e.pageY;
+				loginBox.style.transition = '0s';
+				document.addEventListener('mousemove', move)
+
+				function move(e) {
+					loginBox.style.left = e.pageX - x + 'px';
+					loginBox.style.top = e.pageY - y + 'px';
+					// console.log(e.pageX);
+					// console.log(e.pageY);
+					// console.log(x);
+					console.log(y);
+				}
+				document.addEventListener('mouseup', function() {
+					document.removeEventListener('mousemove', move)
+					loginBox.style.transition = '';
+				})
+			})
+
+
+			}
+			var btn = document.querySelector('.silde_click_comment');
+			var silde_container = document.querySelector('.comment_container');
+			var sum = 0;
+			btn.addEventListener('click', function() {
+
+				if (sum == 0) {
+					silde_container.style.right = '0';
+					sum++;
+				} else {
+					silde_container.style.right = '';
+					sum--;
+				}
+			})
+		
+		</script>
+	</body>
+</html>
